@@ -1,0 +1,7 @@
+[Desktop Entry]
+Name=CityInfo 3.0
+Exec=/usr/share/esmasoft/cityinfo.sh
+Icon=/usr/share/esmasoft/cityinfo.png
+Type=Application
+Terminal=false
+

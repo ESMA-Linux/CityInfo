@@ -1,0 +1,14 @@
+Source: cityinfo
+Section: utils
+Priority: optional
+Maintainer: Mikhail Paulyshka <me@mixaill.tk>
+Build-Depends: debhelper (>=9)
+Standards-Version: 3.9.7
+Homepage: http://esmasoft.com
+
+
+Package: cityinfo
+Architecture: any
+Depends: bash (>=4.2), innoextract, winehq-staging | winehg-devel | wine | wine-devel, unzip, wget, ${misc:Depends}
+Description: Powerful GIS
+ Map of Minsk City
