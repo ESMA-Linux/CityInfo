@@ -1,6 +1,10 @@
 # CityInfo
 Deb пакет с CityInfo
 
+## Cкачать
+
+Ubuntu: [ppa:pavlyshko/esmasoft](https://launchpad.net/~pavlyshko/+archive/ubuntu/esmasoft)
+
 ## История Изменений
 
 * r8: отключен comctl32
