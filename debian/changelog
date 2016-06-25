@@ -1,3 +1,9 @@
+cityinfo (3.0.7.3-9ubuntu1) UNRELEASED; urgency=medium
+
+  * Add download progress indicator. Verify CityInfo installer integrity. Fix dependencies.
+
+ -- Mikhail Paulyshka <me@mixaill.tk>  Sat, 25 Jun 2016 20:32:53 +0300
+
 cityinfo (3.0.7.3-9) xenial; urgency=medium
 
   * Disable splashscreen
