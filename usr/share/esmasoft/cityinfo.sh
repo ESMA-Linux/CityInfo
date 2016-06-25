@@ -15,8 +15,9 @@
 # Отключенные:
 # comctl32 : устраняет одни глитчи, но добавляет другие. Спорный момент
 
-export CI_VERSION=8
+export CI_VERSION=9
 
+export CI_DIR_SCRIPT="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 export CI_DIR_ROOT="$HOME/.esmasoft/cityinfo"
 export CI_DIR_CACHE="$CI_DIR_ROOT/cache"
 export CI_DIR_WINEPRFIX="$CI_DIR_ROOT/wine"
@@ -83,6 +84,12 @@ cityInfo_unpackAndCopy()
 	cp -R "./app/." "$CI_DIR_WINEPRFIX/drive_c/Program Files/CityInfo/"
 }
 
+cityInfo_bugfix()
+{
+	mkdir -p "$CI_DIR_WINEPRFIX/drive_c/users/$USER/Application Data/ESMA/CityInfo/"
+	cp "$CI_DIR_SCRIPT/cityinfo_fixs/default.bsf" "$CI_DIR_WINEPRFIX/drive_c/users/$USER/Application Data/ESMA/CityInfo/default.bsf"
+}
+
 libKasnerik_download()
 {
 	cd "$CI_DIR_TEMP"
@@ -111,6 +118,8 @@ installation()
 	libKasnerik_unpackAndCopy
 
 	directories_clean
+
+	cityInfo_bugfix
 
 	echo "$CI_VERSION" > "$CI_FILE_VERSION"
 }

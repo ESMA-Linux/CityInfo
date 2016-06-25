@@ -7,6 +7,7 @@ Ubuntu: [ppa:pavlyshko/esmasoft](https://launchpad.net/~pavlyshko/+archive/ubunt
 
 ## История Изменений
 
+* r9: отключен сплешскрин, из-за чего теперь виден мессаджбокс позади него
 * r8: отключен comctl32
 * r7: добавлен readme
 * r6: добавлен riched20, рефакторинг

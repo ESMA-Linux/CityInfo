@@ -1,3 +1,9 @@
+cityinfo (3.0.7.3-9) xenial; urgency=medium
+
+  * Disable splashscreen
+
+ -- Mikhail Paulyshka <me@mixaill.tk>  Sat, 25 Jun 2016 11:17:17 +0300
+
 cityinfo (3.0.7.3-8) xenial; urgency=medium
 
   * Initial Release.
