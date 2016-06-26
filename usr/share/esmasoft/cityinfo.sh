@@ -9,13 +9,13 @@
 # - winetricks (скачивается сам)
 
 # Winetricks
-# Включенные:
 # ie7      : устраняет краш, позволяет запуститься
 # riched20 : добавляет отображение текста в "советах дня" 
-# Отключенные:
-# comctl32 : устраняет одни глитчи, но добавляет другие. Спорный момент
 
-export CI_VERSION=10
+#
+# Настройки
+#
+export CI_VERSION=11
 
 export CI_DIR_SCRIPT="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 export CI_DIR_ROOT="$HOME/.esmasoft/cityinfo"
@@ -25,13 +25,21 @@ export CI_DIR_TEMP="$CI_DIR_ROOT/temp"
 
 export CI_FILE_VERSION="$CI_DIR_ROOT/VERSION"
 
-export URL_CITYINFO="http://hpc.by/wp-content/uploads/files/cityinfo/cityinfo3073.exe"
-export URL_CITYINFO_FILENAME="cityinfo3073.exe"
+export CITYINFO_URL="http://hpc.by/wp-content/uploads/files/cityinfo/cityinfo3073.exe"
+export CITYINFO_FILENAME="cityinfo3073.exe"
+export CITYINFO_CHECKSUM="43299557dda6668dd2934d86dbafc92232e099a4"
 
-export URL_LIBKASNERIK="https://github.com/Mixaill/libKasnerik/releases/download/0.0.1/libKasnerik_0.0.1.zip"
-export URL_WINETRICKS="https://raw.githubusercontent.com/Winetricks/winetricks/master/src/winetricks"
+export LIBKASNERIK_VERSION="0.0.1"
+export LIBKASNERIK_URL="https://github.com/ESMA-Linux/libKasnerik/releases/download/$LIBKASNERIK_VERSION/libKasnerik_$LIBKASNERIK_VERSION.zip"
+export LIBKASNERIK_FILENAME="libKasnerik_$LIBKASNERIK_VERSION.zip"
 
-#Winetricks
+export WINETRICKS_URL="https://raw.githubusercontent.com/Winetricks/winetricks/master/src/winetricks"
+
+
+#
+# Winetricks
+#
+# Winetricks authors, GPL2
 winetricks_parse_wget_progress()
 {
     # Parse a percentage, a size, and a time into $1, $2 and $3
@@ -93,8 +101,25 @@ winetricks_download()
 		winetricks_wget_progress -O "$_W_file" -nd -c --read-timeout=300 --retry-connrefused "$_W_url"
 	fi
 }
-#
 
+winetricks_install()
+{
+	cd "$CI_DIR_TEMP"
+	winetricks_download "$WINETRICKS_URL" "./winetricks" "Downloading winetricks"
+	chmod +x ./winetricks
+
+	#ie7
+	winetricks_download "http://download.microsoft.com/download/3/8/8/38889DC1-848C-4BF2-8335-86C573AD86D9/IE7-WindowsXP-x86-enu.exe" "$HOME/.cache/winetricks/ie7/IE7-WindowsXP-x86-enu.exe" "Downloading IE7" "d39b89c360fbaa9706b5181ae4718100687a5326"
+	WINEPREFIX="$CI_DIR_WINEPRFIX" ./winetricks --force --optout --unattended ie7
+
+	#riched20
+	winetricks_download "https://web.archive.org/web/20160129053851/http://download.microsoft.com/download/E/6/A/E6A04295-D2A8-40D0-A0C5-241BFECD095E/W2KSP4_EN.EXE" "$HOME/.cache/winetricks/win2ksp4/W2KSP4_EN.EXE" "Downloading Windows 2000 SP4" "fadea6d94a014b039839fecc6e6a11c20afa4fa8"
+	WINEPREFIX="$CI_DIR_WINEPRFIX" ./winetricks --force --optout --unattended riched20
+}
+
+
+#
+#
 #
 directories_prepare()
 {
@@ -118,31 +143,16 @@ wine_createPrefix()
 	WINEPREFIX="$CI_DIR_WINEPRFIX" WINEARCH="win32" WINEDLLOVERRIDES="mscoree,mshtml=" wineboot
 }
 
-wine_winetricks()
-{
-	cd "$CI_DIR_TEMP"
-	winetricks_download "$URL_WINETRICKS" "./winetricks" "Downloading winetricks"
-	chmod +x ./winetricks
-
-	#ie7
-	winetricks_download "http://download.microsoft.com/download/3/8/8/38889DC1-848C-4BF2-8335-86C573AD86D9/IE7-WindowsXP-x86-enu.exe" "$HOME/.cache/winetricks/ie7/IE7-WindowsXP-x86-enu.exe" "Downloading IE7" "d39b89c360fbaa9706b5181ae4718100687a5326"
-	WINEPREFIX="$CI_DIR_WINEPRFIX" ./winetricks --force --optout --unattended ie7
-
-	#riched20
-	winetricks_download "https://web.archive.org/web/20160129053851/http://download.microsoft.com/download/E/6/A/E6A04295-D2A8-40D0-A0C5-241BFECD095E/W2KSP4_EN.EXE" "$HOME/.cache/winetricks/win2ksp4/W2KSP4_EN.EXE" "Downloading Windows 2000 SP4" "fadea6d94a014b039839fecc6e6a11c20afa4fa8"
-	WINEPREFIX="$CI_DIR_WINEPRFIX" ./winetricks --force --optout --unattended riched20
-}
-
 cityInfo_download()
 {
-	winetricks_download "$URL_CITYINFO" "$CI_DIR_CACHE/$URL_CITYINFO_FILENAME" "Downloading CityInfo" "43299557dda6668dd2934d86dbafc92232e099a4"
-	cp "$CI_DIR_CACHE/$URL_CITYINFO_FILENAME" "$CI_DIR_TEMP/$URL_CITYINFO_FILENAME"
+	winetricks_download "$CITYINFO_URL" "$CI_DIR_CACHE/$CITYINFO_FILENAME" "Downloading CityInfo" "$CITYINFO_CHECKSUM"
+	cp "$CI_DIR_CACHE/$CITYINFO_FILENAME" "$CI_DIR_TEMP/$CITYINFO_FILENAME"
 }
 
 cityInfo_unpackAndCopy()
 {
 	cd "$CI_DIR_TEMP"
-	innoextract ./cityinfo3073.exe
+	innoextract ./"$CITYINFO_FILENAME"
         mkdir -p "$CI_DIR_WINEPRFIX/drive_c/Program Files/CityInfo/"
 	cp -R "./app/." "$CI_DIR_WINEPRFIX/drive_c/Program Files/CityInfo/"
 }
@@ -156,13 +166,13 @@ cityInfo_bugfix()
 libKasnerik_download()
 {
 	cd "$CI_DIR_TEMP"
-	winetricks_download "$URL_LIBKASNERIK" "./libKasnerik_0.0.1.zip" "Downloading LibKasnerik" ""
+	winetricks_download "$LIBKASNERIK_URL" "./$LIBKASNERIK_FILENAME" "Downloading LibKasnerik" ""
 }
 
 libKasnerik_unpackAndCopy()
 {
 	cd "$CI_DIR_TEMP"
-	unzip -o libKasnerik_0.0.1.zip -d lib
+	unzip -o "./$LIBKASNERIK_FILENAME" -d lib
 	cp -R "./lib/." "$CI_DIR_WINEPRFIX/drive_c/Program Files/CityInfo/"
 }
 
@@ -172,7 +182,7 @@ installation()
 	directories_prepare
 
 	wine_createPrefix
-	wine_winetricks
+	winetricks_install
 
 	cityInfo_download
 	cityInfo_unpackAndCopy

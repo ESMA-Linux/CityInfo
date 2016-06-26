@@ -1,4 +1,10 @@
-cityinfo (3.0.7.3-9ubuntu1) UNRELEASED; urgency=medium
+cityinfo (3.0.7.3-11) xenial; urgency=medium
+
+  * Bugfixing
+
+ -- Mikhail Paulyshka <me@mixaill.tk>  Sun, 26 Jun 2016 14:26:22 +0300
+
+cityinfo (3.0.7.3-10) xenial; urgency=medium
 
   * Add download progress indicator. Verify CityInfo installer integrity. Fix dependencies.
 
