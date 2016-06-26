@@ -15,7 +15,7 @@
 #
 # Настройки
 #
-export CI_VERSION=11
+export CI_VERSION=12
 
 export CI_DIR_SCRIPT="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 export CI_DIR_ROOT="$HOME/.esmasoft/cityinfo"
@@ -160,7 +160,7 @@ cityInfo_unpackAndCopy()
 cityInfo_bugfix()
 {
 	mkdir -p "$CI_DIR_WINEPRFIX/drive_c/users/$USER/Application Data/ESMA/CityInfo/"
-	cp "$CI_DIR_SCRIPT/cityinfo_fixs/default.bsf" "$CI_DIR_WINEPRFIX/drive_c/users/$USER/Application Data/ESMA/CityInfo/default.bsf"
+	cp "$CI_DIR_SCRIPT/cityinfo_fixes/default.bsf" "$CI_DIR_WINEPRFIX/drive_c/users/$USER/Application Data/ESMA/CityInfo/default.bsf"
 }
 
 libKasnerik_download()
